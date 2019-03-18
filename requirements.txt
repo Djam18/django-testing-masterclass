@@ -1,0 +1,5 @@
+django
+djangorestframework
+pytest-django
+factory_boy
+Faker
