@@ -91,3 +91,23 @@ class TestPostViews:
     def test_comment_list_returns_200(self):
         response = self.client.get('/api/comments/')
         assert response.status_code == 200
+
+    def test_unauthenticated_cannot_create_comment(self):
+        from .factories import PostFactory
+        post = PostFactory(author=self.user)
+        data = {'post': post.id, 'author': self.user.id, 'content': 'hello'}
+        response = self.client.post('/api/comments/', data)
+        assert response.status_code == 403
+
+    def test_authenticated_can_create_comment(self):
+        from .factories import PostFactory
+        post = PostFactory(author=self.user)
+        self.client.force_login(self.user)
+        import json
+        data = {'post': post.id, 'author': self.user.id, 'content': 'great post'}
+        response = self.client.post('/api/comments/', json.dumps(data), content_type='application/json')
+        assert response.status_code == 201
+
+    def test_get_unknown_comment_returns_404(self):
+        response = self.client.get('/api/comments/99999/')
+        assert response.status_code == 404
