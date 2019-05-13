@@ -36,3 +36,12 @@ class CommentFactory(factory.django.DjangoModelFactory):
     post = factory.SubFactory(PostFactory)
     author = factory.SubFactory(UserFactory)
     content = factory.Faker('paragraph')
+
+
+# Extra factories added after learning SubFactory patterns
+class PublishedPostFactory(PostFactory):
+    published = True
+
+
+class DraftPostFactory(PostFactory):
+    published = False
