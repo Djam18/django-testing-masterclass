@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "django-testing-masterclass"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "django>=4.2",
+    "djangorestframework>=3.14",
+    "pytest-django>=4.7",
+    "factory_boy>=3.3",
+    "Faker>=19.0",
+    "responses>=0.23",
+    "celery>=5.3",
+    "pytest-cov>=4.1",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "testproject.test_settings"
+python_files = ["tests/*.py"]
+addopts = "-v --cov=. --cov-report=term-missing --cov-fail-under=80"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "DJ"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "testproject.test_settings"
+
+[tool.coverage.run]
+source = ["."]
+omit = ["*/migrations/*", "manage.py", "testproject/test_settings.py"]
